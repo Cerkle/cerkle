@@ -20,26 +20,31 @@ public class buttonController : MonoBehaviour {
         menu.GetComponent<menuBehaviour>().active = active;
     }
 
+    //loads the scene with a string in the inspector
     public void loadLevel(string lvlName)
     {
         SceneManager.LoadScene(lvlName);
     }
 
+    //pauses the game
     public void pause()
     {
         Time.timeScale = 0.0f;
     }
 
+    //unpauses the game
     public void unpause()
     {
         Time.timeScale = 1.0f;
     }
 
+    //disables a button that you attach in the inspector
     public void disableButton(Button button)
     {
         button.interactable = false;
     }
 
+    //enables a button that you attach in the inspector
     public void enableButton(Button button)
     {
         button.interactable = true;

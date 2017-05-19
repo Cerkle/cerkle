@@ -5,7 +5,7 @@ using UnityEngine;
 public class playerBehaviour : MonoBehaviour {
 
     //player variables
-    public int health;
+    public int health, speeds;
     public int speed;
     public int iForget;
     public int score;
@@ -15,6 +15,8 @@ public class playerBehaviour : MonoBehaviour {
     //important positions
     private Vector2 currPos;
     public Vector2 mousePos;
+
+    public GameObject enemy;
 
     
 
@@ -62,13 +64,10 @@ public class playerBehaviour : MonoBehaviour {
             //increment the score by 1
             score++;
             //destroy the colliding object
-            Destroy(collision.gameObject);
-        }        
-    }
+            collision.gameObject.transform.position = new Vector3(Random.Range(-4, 4.5f), Random.Range(-2.85f, 2.85f), 0);
+            Instantiate(enemy);
+        }
 
-    //this is a built in function used for detecting collisions while the are still happening
-    private void OnCollisionStay2D(Collision2D collision)
-    {
         //if the player collides with another game object with the tag Enemy
         if (collision.gameObject.tag == "Enemy" && canHit == true)
         {
@@ -76,8 +75,6 @@ public class playerBehaviour : MonoBehaviour {
             health--;
             //set canHit to false so the player wont get constantly hurt
             canHit = false;
-            //start the health timer coroutine 
-            StartCoroutine("healthTimer");
         }
     }
 
@@ -86,16 +83,6 @@ public class playerBehaviour : MonoBehaviour {
     {
         //destroys this game object
         Destroy(this.gameObject);
+        GameObject.Find("GameOverMenu").GetComponent<menuBehaviour>().active = true;
     }
-
-    //coroutine to set can hit back to true
-    IEnumerator healthTimer()
-    {
-        //waits for 1 seconds before returning canHit to true
-        yield return new WaitForSeconds(1);
-
-        //sure you should get this one
-        canHit = true;
-    }
-
 }

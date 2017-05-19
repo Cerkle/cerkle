@@ -8,52 +8,93 @@ public class enemyBehaviour : MonoBehaviour {
     public bool startMove;
 
     public int speed;
+    private int direction;
 
-    private Vector3 startPos;
-    public Vector3 endPos;
+    private Vector3 spawnPos;
+    private Vector3 playerPos;
 
     private float step;
 
 	// Use this for initialization
 	void Start () {
-        //initialize the start position
-		startPos = this.transform.position;
-        //add the start positions values to the end position (this allows for proper movement)
-        endPos += startPos;
-        //setting the movement
-        startMove = true;
-        //speed of the enemy
-        speed = 2;
-        
-	}
+        spawnPos = new Vector3(Random.Range(-4, 4.5f), Random.Range(-2.85f, 2.85f), 0);          //initialize the start position
+        playerPos = GameObject.Find("Player").GetComponent<Transform>().position;        
+        startMove = true;                                                                        //setting the movement
+        speed = 1;                                                                               //speed of the enemy
+        direction = Mathf.RoundToInt(Random.Range(0, 3));
+
+        if (spawnPos.x <= playerPos.x + 0.5f && spawnPos.y >= playerPos.y + 0.5f || spawnPos.x >= playerPos.x + 0.5f || spawnPos.y <= playerPos.y + 0.5f)
+            this.transform.position = spawnPos;
+        else
+            spawnPos = new Vector3(Random.Range(-4, 4.5f), Random.Range(-2.85f, 2.85f), 0);
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        //if the enemy can move
-        if (canMove == true)
+
+        
+
+        if (canMove == true)                                                                    //if the enemy can move
         {
-            //update the speed value (multiplied by deltatime for smooth movement)
-            step = speed * Time.deltaTime;
-            //if the movement is just starting
-            if (startMove == true)
+            step = speed * Time.deltaTime;                                                      //update the speed value (multiplied by deltatime for smooth movement)
+            switch (direction)
             {
-                //move towards the end point
-                transform.position = Vector3.MoveTowards(transform.position, endPos, step);
-                //if the current position reaches the endpoint
-                if (transform.position == endPos)
-                    //start moving back
-                    startMove = false;
-            }
-            //if start move == false
-            else
-            {
-                //move towards the start point
-                transform.position = Vector3.MoveTowards(transform.position, startPos, step);
-                //if the current position reaches the startpoint
-                if (transform.position == startPos)
-                    //restart the movement pattern
-                    startMove = true;
+                case 0:
+                    transform.Translate(Vector3.right * step);
+                    break;
+                case 1:
+                    transform.Translate(-Vector3.right * step);
+                    break;
+                case 2:
+                    transform.Translate(Vector3.up * step);
+                    break;
+                case 3:
+                    transform.Translate(-Vector3.up * step);
+                    break;
             }
         }
+        else                                                                                
+        {
+            return;
+        }
 	}
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Wall")
+            switch (direction)
+            {
+                case 0:
+                    direction = 1;
+                    break;
+                case 1:
+                    direction = 0;
+                    break;
+                case 2:
+                    direction = 3;
+                    break;
+                case 3:
+                    direction = 2;
+                    break;
+            }
+
+        if (collision.gameObject.tag == "Enemy")
+            switch (direction)
+            {
+                case 0:
+                    direction = 1;
+                    break;
+                case 1:
+                    direction = 0;
+                    break;
+                case 2:
+                    direction = 3;
+                    break;
+                case 3:
+                    direction = 2;
+                    break;
+            }
+    }
 }
+
+
