@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class uiBehaviour : MonoBehaviour {
 
-    public Text scoreText;          //score TextBox
-    public Text healthText;         //health TextBox
+    public Text scoreText;          //score TextBox 
     public GameObject player;       //player object in the scene
 	
 	// Update is called once per frame
@@ -15,11 +14,10 @@ public class uiBehaviour : MonoBehaviour {
         if (player)
         {
             scoreText.text = "Score: " + player.GetComponent<playerBehaviour>().score;      //changes the score Textbox text and gets the players score variable
-            healthText.text = "Health: " + player.GetComponent<playerBehaviour>().health;   //same thing but with the health variable
         }
         //if not 
         else
-            //send a debug message
+            //send a debug message to the console
             Debug.Log("Player is not found: Check if the player is in the Scene");
 	}
 }
