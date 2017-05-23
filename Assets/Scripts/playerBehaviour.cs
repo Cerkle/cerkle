@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class playerBehaviour : MonoBehaviour {
 
@@ -9,14 +10,19 @@ public class playerBehaviour : MonoBehaviour {
     public int speed;
     public int iForget;
     public int score;
+    public int powerUpScore;
+
 
     public bool canHit;
+    public bool powerUp;
 
     //important positions
     private Vector2 currPos;
     public Vector2 mousePos;
 
     public GameObject enemy;
+    public Slider powerUpSlider;
+    public Text powerUpText;
 
     
 
@@ -27,6 +33,7 @@ public class playerBehaviour : MonoBehaviour {
         speed = 3;
         score = 0;
         canHit = true;
+        powerUp = false;
 	}
 	
 	// Update is called once per frame
@@ -47,6 +54,8 @@ public class playerBehaviour : MonoBehaviour {
             transform.position = Vector2.MoveTowards(currPos, mousePos, step);
         }
 
+        activatePowerUp();
+
         //if health is less than equal to 0
         if (health <= 0)
         {
@@ -63,6 +72,8 @@ public class playerBehaviour : MonoBehaviour {
         {
             //increment the score by 1
             score++;
+            if (powerUpSlider.value < 10)
+                adjustPowerUp();
             //destroy the colliding object
             collision.gameObject.transform.position = new Vector3(Random.Range(-4, 4.5f), Random.Range(-2.85f, 2.85f), 0);
             Instantiate(enemy);
@@ -84,5 +95,31 @@ public class playerBehaviour : MonoBehaviour {
         //destroys this game object
         Destroy(this.gameObject);
         GameObject.Find("GameOverMenu").GetComponent<menuBehaviour>().active = true;
+    }
+
+    public void adjustPowerUp()
+    {
+        if (powerUpScore != 5)
+        {
+            powerUpScore++;
+            powerUpSlider.value = powerUpScore;
+        }
+        else
+        {
+            powerUpText.text = "PowerUp Ready";
+            powerUpScore = 5;
+        }
+    }
+
+    public void activatePowerUp()
+    {
+        if (powerUpScore == 5)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                powerUpScore = 0;
+                powerUpText
+            }
+        }
     }
 }
