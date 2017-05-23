@@ -118,7 +118,7 @@ public class playerBehaviour : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 powerUpScore = 0;
-                powerUpText
+                powerUpText.text = "";
             }
         }
     }
