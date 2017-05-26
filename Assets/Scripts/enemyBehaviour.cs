@@ -20,7 +20,7 @@ public class enemyBehaviour : MonoBehaviour {
         spawnPos = new Vector3(Random.Range(-4, 4.5f), Random.Range(-2.85f, 2.85f), 0);          //initialize the start position
         playerPos = GameObject.Find("Player").GetComponent<Transform>().position;        
         startMove = true;                                                                        //setting the movement
-        speed = 1;                                                                               //speed of the enemy
+        speed = 1;                                                                              //speed of the enemy
         direction = Mathf.RoundToInt(Random.Range(0, 3));
 
         if (spawnPos.x <= playerPos.x + 0.5f && spawnPos.y >= playerPos.y + 0.5f || spawnPos.x >= playerPos.x + 0.5f || spawnPos.y <= playerPos.y + 0.5f)

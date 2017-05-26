@@ -79,3 +79,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.unity
+Assets/Scenes/MainMenu.unity
+Assets/Sprites/Buttons/CLICKS.png.meta
