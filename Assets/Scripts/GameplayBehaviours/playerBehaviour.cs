@@ -6,9 +6,10 @@ using UnityEngine.UI;
 public class playerBehaviour : MonoBehaviour {
 
     //player variables
-    public int health, speeds;
+    public int health;
     public int speed;
-    public int iForget;
+    public int size;
+    public int powerUpTime;
     public int score;
     public int powerUpScore;
 
@@ -20,20 +21,30 @@ public class playerBehaviour : MonoBehaviour {
     private Vector2 currPos;
     public Vector2 mousePos;
 
+    public GameObject gameManager;
+    public gameManager playerVars;
     public GameObject enemy;
     public Slider powerUpSlider;
     public Text powerUpText;
 
-    
+    private void Awake()
+    {
+        gameManager = GameObject.Find("GameManager");
+        playerVars = gameManager.GetComponent<gameManager>();
+    }
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         //initializing the player variables
         health = 1;
-        speed = 3;
-        score = 0;
         canHit = true;
         powerUp = false;
+
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = playerVars.charSprite;
+        speed = playerVars.speed / 10;
+        size = playerVars.size / 10;
+        powerUpTime = playerVars.powerUpTime / 10;
+        powerUpSlider.maxValue = powerUpTime;
 	}
 	
 	// Update is called once per frame
@@ -54,7 +65,14 @@ public class playerBehaviour : MonoBehaviour {
             transform.position = Vector2.MoveTowards(currPos, mousePos, step);
         }
 
-        activatePowerUp();
+        if (powerUpScore == powerUpTime)
+        {
+            powerUpText.text = "PowerUp Ready";
+            activatePowerUp();
+        }
+
+        powerUpSlider.value = powerUpScore;
+
 
         //if health is less than equal to 0
         if (health <= 0)
@@ -72,7 +90,7 @@ public class playerBehaviour : MonoBehaviour {
         {
             //increment the score by 1
             score++;
-            if (powerUpSlider.value < 10)
+            if (powerUpSlider.value < powerUpTime)
                 adjustPowerUp();
             //destroy the colliding object
             collision.gameObject.transform.position = new Vector3(Random.Range(-4, 4.5f), Random.Range(-2.85f, 2.85f), 0);
@@ -93,27 +111,24 @@ public class playerBehaviour : MonoBehaviour {
     public void killMe()
     {
         //destroys this game object
-        Destroy(this.gameObject);
+        saveScore();
         GameObject.Find("GameOverMenu").GetComponent<menuBehaviour>().active = true;
+        GameObject.Find("MenuTitleText").GetComponent<Text>().text = "Game Over";
+        Time.timeScale = 0.0f;
+        Destroy(this.gameObject);
     }
 
     public void adjustPowerUp()
     {
-        if (powerUpScore != 5)
+        if (powerUpScore < powerUpTime)
         {
             powerUpScore++;
-            powerUpSlider.value = powerUpScore;
-        }
-        else
-        {
-            powerUpText.text = "PowerUp Ready";
-            powerUpScore = 5;
         }
     }
 
     public void activatePowerUp()
     {
-        if (powerUpScore == 5)
+        if (powerUpScore == powerUpTime)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -121,5 +136,18 @@ public class playerBehaviour : MonoBehaviour {
                 powerUpText.text = "";
             }
         }
+    }
+
+    private void saveScore()
+    {
+        playerVars.totalScore += score;
+        if (score > playerVars.highScore)
+        {
+            playerVars.highScore = score;
+            GameObject.Find("MenuTextBox").GetComponent<Text>().text = "New HighScore!\n" + "Score: " + score + "\n Highscore: " + playerVars.highScore;
+        }
+        else
+        GameObject.Find("MenuTextBox").GetComponent<Text>().text = "Try Again!\n" + "Score: " + score + "\n Highscore: " + playerVars.highScore;
+        playerVars.saveScores();
     }
 }

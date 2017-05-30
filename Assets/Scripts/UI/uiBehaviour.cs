@@ -16,8 +16,8 @@ public class uiBehaviour : MonoBehaviour {
             scoreText.text = "Score: " + player.GetComponent<playerBehaviour>().score;      //changes the score Textbox text and gets the players score variable
         }
         //if not 
-        else
+        //else
             //send a debug message to the console
-            Debug.Log("Player is not found: Check if the player is in the Scene");
+            //Debug.Log("Player is not found: Check if the player is in the Scene");
 	}
 }

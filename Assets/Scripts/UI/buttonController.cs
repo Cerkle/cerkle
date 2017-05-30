@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class buttonController : MonoBehaviour {
 
-    public string name;     //inspector string to find the game object
+    public string menuName;     //inspector string to find the game object
     public bool active;     //inspector boolean to set the for the menu
+    public Text textTitle;
+    public Text textBox;
 
     public void menuButton()
     {
@@ -15,7 +17,7 @@ public class buttonController : MonoBehaviour {
         GameObject menu;
 
         //find and set the menu variable to the game object in the scene
-        menu = GameObject.Find(name);
+        menu = GameObject.Find(menuName);
         //set the menu game objects active variable
         menu.GetComponent<menuBehaviour>().active = active;
     }
@@ -48,5 +50,15 @@ public class buttonController : MonoBehaviour {
     public void enableButton(Button button)
     {
         button.interactable = true;
+    }
+
+    public void changeMenuTitleText(string text)
+    {
+        textTitle.text = text;
+    }
+
+    public void changeMenuText(string text)
+    {
+        textBox.text = text;
     }
 }
