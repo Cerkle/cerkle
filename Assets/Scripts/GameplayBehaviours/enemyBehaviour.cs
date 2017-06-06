@@ -6,9 +6,11 @@ public class enemyBehaviour : MonoBehaviour {
 
     public bool canMove;
     public bool startMove;
+    public bool hit;
 
     public int speed;
     private int direction;
+    public int health;
 
     private Vector3 spawnPos;
     private Vector3 playerPos;
@@ -31,8 +33,6 @@ public class enemyBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-        
 
         if (canMove == true)                                                                    //if the enemy can move
         {
@@ -57,11 +57,47 @@ public class enemyBehaviour : MonoBehaviour {
         {
             return;
         }
+
+        if (GetComponent<Rigidbody2D>().velocity.magnitude <= 0.2f)
+        {
+            hit = false;
+        }
+        else
+        {
+            hit = true;
+        }
 	}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Wall")
+        {
+            this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            if (hit == true)
+                Destroy(this.gameObject);
+
+            switch (direction)
+            {
+                case 0:
+                    direction = 1;
+                    break;
+                case 1:
+                    direction = 0;
+                    break;
+                case 2:
+                    direction = 3;
+                    break;
+                case 3:
+                    direction = 2;
+                    break;
+            }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Wall")
+
             switch (direction)
             {
                 case 0:

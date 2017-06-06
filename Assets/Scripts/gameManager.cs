@@ -4,7 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+
+
 public class gameManager : MonoBehaviour {
+
+    public enum powerUps
+    {
+        None,
+        Sickly,
+        Cyclops,
+        Triclops,
+        Alien,
+        Mushroom
+    }
+
+    public powerUps powerUp;
 
     public int highScore;
 
@@ -38,6 +52,7 @@ public class gameManager : MonoBehaviour {
             Destroy(gameObject);
         DontDestroyOnLoad(this.gameObject);
         getScore();
+        powerUp = powerUps.None;
     }
 
 	// Use this for initialization

@@ -13,6 +13,8 @@ public class characterButtonController : MonoBehaviour
     public gameManager gameManager;
     //Sprite Holder
     public Sprite charSprite;
+    //Power Up Holder
+    public string powerUp;
 
     //Character Selection Variables
     public int speed;
@@ -39,6 +41,7 @@ public class characterButtonController : MonoBehaviour
         gameManager.speed = charSpeed;
         gameManager.size = charSize;
         gameManager.powerUpTime = charPower;
+        gameManager.powerUp =  (gameManager.powerUps) System.Enum.Parse(typeof(gameManager.powerUps), powerUp);
 
         GameObject.Find("CharacterImage").GetComponent<Image>().sprite = charSprite;
         gameManager.GetComponent<gameManager>().charSprite = charSprite;
