@@ -8,6 +8,7 @@ public class buttonController : MonoBehaviour {
 
     public string menuName;     //inspector string to find the game object
     public bool active;     //inspector boolean to set the for the menu
+
     public Text textTitle;
     public Text textBox;
 

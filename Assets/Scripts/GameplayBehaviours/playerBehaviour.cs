@@ -12,14 +12,15 @@ public class playerBehaviour : MonoBehaviour {
     public int powerUpTime;
     public int score;
     public int powerUpScore;
-    public int powerTime;
-    public float timer;
+
+    public float time;
 
     public string powerUps;
 
 
     public bool canHit;
     public bool powerUp;
+    private bool timer;
 
     //important positions
     private Vector3 prevPos;
@@ -82,6 +83,7 @@ public class playerBehaviour : MonoBehaviour {
 
         powerUpSlider.value = powerUpScore;
 
+        powTimer();
 
         //if health is less than equal to 0
         if (health <= 0)
@@ -119,8 +121,7 @@ public class playerBehaviour : MonoBehaviour {
         {
             Vector2 dir = collision.contacts[0].point - new Vector2(this.transform.position.x, this.transform.position.y);
 
-            collision.gameObject.GetComponent<Rigidbody2D>().AddForceAtPosition(-currVel, dir, ForceMode2D.Impulse);
-            Debug.Log(currVel);
+            collision.gameObject.GetComponent<Rigidbody2D>().AddForceAtPosition(-currVel / 2, dir, ForceMode2D.Impulse);
         }
     }
 
@@ -177,7 +178,8 @@ public class playerBehaviour : MonoBehaviour {
 
                     case "Mushroom":
                         canHit = false;
-                        powTimer(4);
+                        time = 4;
+                        timer = true;
                         StartCoroutine(mushroom(4, canHit));
                         StartCoroutine("CalcVelocity");
                         break;
@@ -199,25 +201,31 @@ public class playerBehaviour : MonoBehaviour {
         playerVars.saveScores();
     }
 
-    private void powTimer(float time)
+    private void powTimer()
     {
-
-        powerTime = (int)time;
-        timer = 1;
-        timer -= 0.3f;
-
-        while(timer <= 0)
+        if (timer == true)
         {
-            powerTime--;
-            timer = 1;
+            int powTimer;
+            powTimer = (int)time;
+            time -= Time.deltaTime;
+
+            if (time <= 0)
+            {
+                powerUpText.text = "";
+                powTimer = 0;
+                timer = false;
+                return;
+            }
+            else
+                powerUpText.text = "" + powTimer;
+            Debug.Log(time);
         }
-        powerUpText.text = "" + powerTime;
-        Debug.Log(timer);
+        else
+            return;
     }
 
     private IEnumerator sickly()
     {
-        int dist;
         GameObject[] gos = GameObject.FindGameObjectsWithTag("Enemy");
         
         for(int i = 0; i < gos.Length; i++)
@@ -302,7 +310,6 @@ public class playerBehaviour : MonoBehaviour {
             yield return new WaitForEndOfFrame();
             // Calculate velocity: Velocity = DeltaPosition / DeltaTime
             currVel = (prevPos - transform.position) / Time.deltaTime;
-            Debug.Log(currVel);
         }
     }
 }

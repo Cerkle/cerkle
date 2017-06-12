@@ -16,20 +16,32 @@ public class characterButtonController : MonoBehaviour
     //Power Up Holder
     public string powerUp;
 
+    public Image lockedSprite;
+
     //Character Selection Variables
     public int speed;
     public int size;
     public int powerUpTime;
 
+    private void Awake()
+    {
+        gameManager = GameObject.Find("GameManager").GetComponent<gameManager>();
+    }
+
     // Use this for initialization
     void Start()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<gameManager>();
         thisButt = this.gameObject.GetComponent<Button>();
         if (gameManager.totalScore >= isEnabled)
+        {
             thisButt.interactable = true;
+            lockedSprite.color = Color.white;
+        }
         else
+        {
             thisButt.interactable = false;
+            lockedSprite.color = Color.black;
+        }
     }
 
     public void clicked()
