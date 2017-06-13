@@ -46,13 +46,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\CameraBehaviour.cs" />
+     <Compile Include="Assets\Scripts\GameplayBehaviours\cameraBehaviour.cs" />
+     <Compile Include="Assets\Scripts\GameplayBehaviours\enemyBehaviour.cs" />
+     <Compile Include="Assets\Scripts\GameplayBehaviours\playerBehaviour.cs" />
      <Compile Include="Assets\Scripts\UI\buttonController.cs" />
      <Compile Include="Assets\Scripts\UI\menuBehaviour.cs" />
      <Compile Include="Assets\Scripts\UI\sliderBehaviour.cs" />
      <Compile Include="Assets\Scripts\UI\uiBehaviour.cs" />
-     <Compile Include="Assets\Scripts\enemyBehaviour.cs" />
-     <Compile Include="Assets\Scripts\playerBehaviour.cs" />
+     <Compile Include="Assets\Scripts\characterButtonController.cs" />
+     <Compile Include="Assets\Scripts\gameManager.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
